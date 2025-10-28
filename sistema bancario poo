@@ -1,0 +1,63 @@
+# arquivo: src/perfil_dio.py
+
+class Usuario:
+    def __init__(self, nome, email):
+        self._nome = nome         # atributo protegido
+        self._email = email       # atributo protegido
+
+    @property
+    def nome(self):
+        return self._nome
+
+    @nome.setter
+    def nome(self, novo_nome):
+        if novo_nome:
+            self._nome = novo_nome
+        else:
+            raise ValueError("Nome não pode ser vazio.")
+
+    def apresentar(self):
+        print(f"Olá, meu nome é {self._nome} e meu email é {self._email}.")
+
+
+class Aluno(Usuario):
+    def __init__(self, nome, email, curso):
+        super().__init__(nome, email)
+        self._curso = curso
+
+    @property
+    def curso(self):
+        return self._curso
+
+    def apresentar(self):  # polimorfismo
+        print(f"Olá, sou {self.nome}, estudante do curso {self._curso}.")
+
+
+class Mentor(Usuario):
+    def __init__(self, nome, email, especialidade):
+        super().__init__(nome, email)
+        self._especialidade = especialidade
+
+    @property
+    def especialidade(self):
+        return self._especialidade
+
+    def apresentar(self):  # polimorfismo
+        print(f"Olá, sou {self.nome}, mentor especialista em {self._especialidade}.")
+
+
+# Função para demonstrar uso
+def main():
+    # Criando objetos
+    aluno1 = Aluno("Maria", "maria@email.com", "Python")
+    mentor1 = Mentor("João", "joao@email.com", "Machine Learning")
+
+    # Lista polimórfica
+    usuarios = [aluno1, mentor1]
+
+    for usuario in usuarios:
+        usuario.apresentar()
+
+
+if __name__ == "__main__":
+    main()
