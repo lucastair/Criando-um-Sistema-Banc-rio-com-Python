@@ -1,0 +1,75 @@
+meu_pacote_imagem/
+│
+├── src/
+│   └── meu_pacote_imagem/
+│       ├── __init__.py
+│       ├── filtros.py
+│       └── utils.py
+│
+├── tests/
+│   └── test_filtros.py
+│
+├── README.md
+├── pyproject.toml
+└── LICENSE
+from .filtros import converter_para_cinza, redimensionar_imagem, rotacionar_imagem
+
+__all__ = [
+    "converter_para_cinza",
+    "redimensionar_imagem",
+    "rotacionar_imagem",
+]
+from PIL import Image
+
+def converter_para_cinza(caminho_imagem, caminho_saida):
+    """Converte uma imagem para tons de cinza."""
+    imagem = Image.open(caminho_imagem).convert("L")
+    imagem.save(caminho_saida)
+    return caminho_saida
+
+def redimensionar_imagem(caminho_imagem, largura, altura, caminho_saida):
+    """Redimensiona uma imagem."""
+    imagem = Image.open(caminho_imagem)
+    imagem = imagem.resize((largura, altura))
+    imagem.save(caminho_saida)
+    return caminho_saida
+
+def rotacionar_imagem(caminho_imagem, angulo, caminho_saida):
+    """Rotaciona uma imagem em graus."""
+    imagem = Image.open(caminho_imagem)
+    imagem = imagem.rotate(angulo)
+    imagem.save(caminho_saida)
+    return caminho_saida
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meu-pacote-imagem"
+version = "0.1.0"
+authors = [
+  { name="Seu Nome", email="seuemail@example.com" }
+]
+description = "Um pacote simples para processamento de imagens em Python"
+readme = "README.md"
+license = {text = "MIT"}
+dependencies = ["Pillow>=10.0.0"]
+requires-python = ">=3.8"
+keywords = ["imagem", "processamento", "python", "pillow"]
+
+[project.urls]
+Homepage = "https://github.com/seuusuario/meu_pacote_imagem"
+from meu_pacote_imagem import converter_para_cinza
+import os
+
+def test_converter_para_cinza(tmp_path):
+    from PIL import Image
+    img = Image.new("RGB", (10, 10), color="red")
+    caminho_original = tmp_path / "img.png"
+    caminho_saida = tmp_path / "img_cinza.png"
+    img.save(caminho_original)
+
+    converter_para_cinza(caminho_original, caminho_saida)
+    assert os.path.exists(caminho_saida)
+pip install -e .
+pytest
