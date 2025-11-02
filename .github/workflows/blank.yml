@@ -1,0 +1,74 @@
+meu_pacote_imagem/
+│
+├── src/
+│   └── meu_pacote_imagem/
+│       ├── __init__.py
+│       ├── filtros.py
+│       └── utils.py
+│
+├── tests/
+│   └── test_filtros.py
+│
+├── .github/
+│   └── workflows/
+│       └── publish.yml
+│
+├── README.md
+├── LICENSE
+└── pyproject.toml
+from .filtros import converter_para_cinza, redimensionar_imagem, rotacionar_imagem
+
+__all__ = [
+    "converter_para_cinza",
+    "redimensionar_imagem",
+    "rotacionar_imagem",
+]
+from PIL import Image
+import os
+
+def converter_para_cinza(caminho_imagem, caminho_saida):
+    """Converte uma imagem para tons de cinza."""
+    if not os.path.exists(caminho_imagem):
+        raise FileNotFoundError(f"Arquivo não encontrado: {caminho_imagem}")
+    imagem = Image.open(caminho_imagem).convert("L")
+    imagem.save(caminho_saida)
+    return caminho_saida
+
+
+def redimensionar_imagem(caminho_imagem, largura, altura, caminho_saida):
+    """Redimensiona uma imagem."""
+    if not os.path.exists(caminho_imagem):
+        raise FileNotFoundError(f"Arquivo não encontrado: {caminho_imagem}")
+    imagem = Image.open(caminho_imagem)
+    imagem = imagem.resize((largura, altura))
+    imagem.save(caminho_saida)
+    return caminho_saida
+
+
+def rotacionar_imagem(caminho_imagem, angulo, caminho_saida):
+    """Rotaciona uma imagem em graus."""
+    if not os.path.exists(caminho_imagem):
+        raise FileNotFoundError(f"Arquivo não encontrado: {caminho_imagem}")
+    imagem = Image.open(caminho_imagem)
+    imagem = imagem.rotate(angulo)
+    imagem.save(caminho_saida)
+    return caminho_saida
+import os
+
+def verificar_arquivo(caminho):
+    """Verifica se um arquivo existe."""
+    if not os.path.exists(caminho):
+        raise FileNotFoundError(f"Arquivo não encontrado: {caminho}")
+    return True
+from meu_pacote_imagem import converter_para_cinza
+import os
+
+def test_converter_para_cinza(tmp_path):
+    from PIL import Image
+    img = Image.new("RGB", (10, 10), color="red")
+    caminho_original = tmp_path / "img.png"
+    caminho_saida = tmp_path / "img_cinza.png"
+    img.save(caminho_original)
+
+    converter_para_cinza(caminho_original, caminho_saida)
+    assert os.path.exists(caminho_saida)
